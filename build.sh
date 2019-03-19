@@ -85,8 +85,15 @@ InstallNvidiaSDK() {
 InstallNvCodecIncludes() {
     echo "Installing Nv codec headers from https://github.com/FFmpeg/nv-codec-headers"
     cd "$source_dir"
-    git clone https://github.com/FFmpeg/nv-codec-headers
-    cd nv-codec-headers
+    # git clone https://github.com/FFmpeg/nv-codec-headers
+    # cd nv-codec-headers
+    if [ -d nv-codec-headers ]; then
+        cd nv-codec-headers
+        git pull
+    else
+        git clone https://github.com/FFmpeg/nv-codec-headers
+        cd nv-codec-headers
+    fi
     cp -a include/ffnvcodec "$inc_dir"
 }
 
@@ -131,7 +138,7 @@ BuildFdkAac() {
     echo "Compiling libfdk-aac"
     cd $source_dir
     wget -4 -O fdk-aac.zip https://github.com/mstorsjo/fdk-aac/zipball/master
-    unzip fdk-aac.zip
+    unzip -o fdk-aac.zip
     cd mstorsjo-fdk-aac*
     autoreconf -fiv
     ./configure --prefix="$build_dir" # --disable-shared
@@ -295,17 +302,18 @@ BuildFFmpeg() {
 BuildOBS() {
     cd $source_dir
     if [ -f $build_dir/bin/ffmpeg ]; then
-        export FFmpegPath="${build_dir}/bin/ffmpeg"
+        export FFmpegPath="${build_dir}"
     else
         echo "FFmpegPath not set, using default FFmpeg"
     fi
 
     if [ -d obs-studio ]; then
         cd obs-studio
-        git pull
+        git checkout -f 23.0.2
     else
         git clone https://github.com/obsproject/obs-studio
         cd obs-studio
+        git checkout -f 23.0.2
     fi
     mkdir -p build
     cd build
