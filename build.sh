@@ -89,10 +89,11 @@ InstallNvCodecIncludes() {
     # cd nv-codec-headers
     if [ -d nv-codec-headers ]; then
         cd nv-codec-headers
-        git pull
+        git checkout -f sdk/8.0
     else
         git clone https://github.com/FFmpeg/nv-codec-headers
         cd nv-codec-headers
+        git checkout -f sdk/8.0
     fi
     cp -a include/ffnvcodec "$inc_dir"
 }
