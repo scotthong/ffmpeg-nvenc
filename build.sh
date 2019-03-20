@@ -217,7 +217,6 @@ BuildFFmpeg() {
         --enable-cuda \
         --enable-cuvid \
         --enable-libnpp \
-        --enable-libnpp \
         --enable-pic \
         --enable-libxcb \
         --extra-ldexeflags=-pie \
