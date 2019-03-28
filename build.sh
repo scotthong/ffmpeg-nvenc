@@ -95,6 +95,8 @@ InstallNvCodecIncludes() {
         cd nv-codec-headers
         git checkout -f sdk/8.0
     fi
+    # need to run "make install" to build successfully
+    sudo make install
     cp -a include/ffnvcodec "$inc_dir"
 }
 
