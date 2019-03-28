@@ -71,7 +71,7 @@ InstallDependenciesOpenSUSE() {
 
 InstallNvidiaSDK() {
     echo "Installing the NVidia Video SDK"
-    sdk_version="9.0.20"
+    sdk_version="8.0.14"
     sdk_basename="Video_Codec_SDK_${sdk_version}"
     cd "$source_dir"
     if [ ! -f "${sdk_basename}.zip" ]; then
