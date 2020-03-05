@@ -74,6 +74,7 @@ InstallNvidiaSDK() {
     sdk_version="8.0.14"
     sdk_basename="Video_Codec_SDK_${sdk_version}"
     cd "$source_dir"
+    cp "/opt/apps/${sdk_basename}.zip" .
     if [ ! -f "${sdk_basename}.zip" ]; then
         echo "Please download ${sdk_basename} from the NVidia website and place it the source folder"
     fi
@@ -129,9 +130,19 @@ BuildYasm() {
 BuildX264() {
     echo "Compiling libx264"
     cd $source_dir
-    wget -4 http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
-    tar xjf last_x264.tar.bz2
-    cd x264-snapshot*
+
+    # wget -4 http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
+    # tar xjf last_x264.tar.bz2
+    # cd x264-snapshot*
+
+    if [ -d x264 ]; then
+        cd x264
+        git pull
+    else
+        git clone https://code.videolan.org/videolan/x264.git
+        cd x264
+    fi
+
     ./configure --prefix="$build_dir" --bindir="$bin_dir" --enable-pic --enable-shared
     make -j${cpus}
     make install
@@ -200,8 +211,8 @@ BuildFFmpeg() {
     cd ffmpeg-${ffmpeg_version}
     PKG_CONFIG_PATH="${build_dir}/lib/pkgconfig" ./configure \
         --prefix="$build_dir" \
-        --extra-cflags="-fPIC -m64 -I${inc_dir} -I/usr/local/cuda/include" \
-        --extra-ldflags="-L${build_dir}/lib -L/usr/local/cuda/lib64" \
+        --extra-cflags="-fPIC -m64 -I${inc_dir}" \
+        --extra-ldflags="-L${build_dir}/lib" \
         --bindir="$bin_dir" \
         --incdir="$inc_dir" \
         --enable-gpl \
@@ -216,9 +227,6 @@ BuildFFmpeg() {
         --enable-libx264 \
         --enable-nonfree \
         --enable-nvenc \
-        --enable-cuda \
-        --enable-cuvid \
-        --enable-libnpp \
         --enable-pic \
         --enable-libxcb \
         --extra-ldexeflags=-pie \

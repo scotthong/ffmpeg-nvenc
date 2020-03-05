@@ -14,7 +14,7 @@ Clone the repo then use the `build.sh` script to compile the binaries
 ```
 git clone https://github.com/lutris/ffmpeg-nvenc.git
 cd ffmpeg-nvenc
-./build.sh --dest $HOME/apps/ffmpeg-nvenc
+./build.sh --dest /opt/apps/ffmpeg-nvenc --obs
 ```
 
 The following command line options are available:
@@ -32,3 +32,7 @@ The following command line options are available:
 If you find this script useful, you can consider
 supporting [Linux GameCast](https://www.patreon.com/linuxgamecast)
 and [Lutris](https://www.patreon.com/lutris).
+
+```
+./build.sh --obs --dest /opt/apps/ffmpeg-nvenc
+```
